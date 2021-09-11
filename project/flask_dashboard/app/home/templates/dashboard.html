@@ -1,0 +1,373 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+        <div class="row justify-content-md-center">
+            <div class="col-12 mb-4">
+                <div class="card bg-yellow-alt shadow-sm">
+                    <div class="card-header d-flex flex-row align-items-center flex-0">
+                        <div class="d-block">
+                            <div class="h5 font-weight-normal mb-2">Объем продаж</div>
+                            <h2 class="h3" id = "chart-data-ammount"></h2>
+                            <div class="small mt-2"> 
+                                <span class="font-weight-bold mr-2">Предыдущий</span>                              
+                                <span class="fas fa-angle-up text-success"></span>                                   
+                                <span class="text-success font-weight-bold" id="orders-chart-percent"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex ml-auto">
+                            <a href="#" class="btn btn-secondary text-dark btn-sm mr-2">Месяц</a>
+                            <a href="#" class="btn btn-primary btn-sm mr-3">Неделя</a>
+                        </div>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="ct-chart-sales-value ct-double-octave ct-series-g"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span class="fas fa-chart-line"></span></div>
+                                <div class="d-sm-none">
+                                    <h2 class="h5">Пользователи</h2>
+                                    <h3 class="mb-1">345,678</h3>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-7 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h5">Пользователи</h2>
+                                    <h3 class="mb-1">{{users}}</h3>
+                                </div>
+                                <small>Все пользователи бота</small>
+                                <div class="small mt-2">
+                                    {% if users_percent >= 0 %}
+                                        <span class="fas fa-angle-up text-success"></span>                                   
+                                        <span class="text-success font-weight-bold">{{users_percent}}%</span> 
+                                    {% else %}
+                                        <span class="fas fa-angle-down text-danger"></span>                                   
+                                        <span class="text-danger font-weight-bold">{{users_percent}}%</span> 
+                                    {% endif %}                   
+                                    От прошлого месяца
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                <div class="icon icon-shape icon-md icon-shape-secondary rounded mr-4"><span class="fas fa-cash-register"></span></div>
+                                <div class="d-sm-none">
+                                    <h2 class="h5">Сумма заказов</h2>
+                                    <h3 class="mb-1">{{ammount}}</h3>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-7 px-xl-0">
+                                <div class="d-none d-sm-block">
+                                    <h2 class="h5">Сумма заказов</h2>
+                                    <h3 class="mb-1">{{ammount}}</h3>
+                                </div>
+                                <small>Закрытые за все время</small>
+                                <div class="small mt-2">                               
+                                    {% if orders_percent >= 0 %}
+                                        <span class="fas fa-angle-up text-success"></span>                                   
+                                        <span class="text-success font-weight-bold">{{orders_percent}}%</span> 
+                                    {% else %}
+                                        <span class="fas fa-angle-down text-danger"></span>                                   
+                                        <span class="text-danger font-weight-bold">{{orders_percent}}%</span> 
+                                    {% endif %}  
+                                    От прошлого месяца
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                <div class="ct-chart-traffic-share ct-golden-section ct-series-a"></div>
+                            </div>
+                            <div class="col-12 col-xl-7 px-xl-0">
+                                <h2 class="h5 mb-3">Переходы в бот</h2>
+                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"><span class="fas fa-desktop"></span></span> Телеграм <a href="#" class="h6">60%</a></h6>
+                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-primary mr-1"><span class="fas fa-mobile-alt"></span></span> Инстаграм <a href="#" class="h6">30%</a></h6>
+                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-tertiary mr-1"><span class="fas fa-tablet-alt"></span></span> Facebook <a href="#" class="h6">10%</a></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                <div class="col-12 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body">
+                            <div class="row d-block d-xl-flex align-items-center">
+                                <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                    <div class="ct-chart-traffic-share ct-golden-section ct-series-a" id="good_search"></div>
+                                </div>
+                                <div class="col-12 col-xl-7 px-xl-0">
+                                    <h2 class="h5 mb-3">Топ удачного поиска</h2>
+                                    {% for query in good_search %}
+                                        <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"></span> {{query[0]}} <b>{{query[1]}}</b></h6>
+                                    {% endfor %}
+                                    <!--<h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"><span class="fas fa-desktop"></span></span> Телеграм <a href="#" class="h6">60%</a></h6>
+                                    <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-primary mr-1"><span class="fas fa-mobile-alt"></span></span> Инстаграм <a href="#" class="h6">30%</a></h6>
+                                    <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-tertiary mr-1"><span class="fas fa-tablet-alt"></span></span> Facebook <a href="#" class="h6">10%</a></h6>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body">
+                            <div class="row d-block d-xl-flex align-items-center">
+                                <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                    <div class="ct-chart-traffic-share ct-golden-section ct-series-a " id="bad_search"></div>
+                                </div>
+                                <div class="col-12 col-xl-7 px-xl-0">
+                                    <h2 class="h5 mb-3">Топ неудачного поиска</h2>
+                                    {% for query in bad_search %}
+                                        <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"></span> {{query[0]}} <b>{{query[1]}}</b></h6>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4 mb-4">
+                <div class="col-12 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body d-flex flex-row align-items-center flex-0 border-bottom">
+                            <div class="d-block">
+                                <div class="h6 font-weight-normal text-gray mb-2">Всего заказов</div>
+                                <h2 class="h3">452</h2>
+                                <div class="small mt-2">                               
+                                    <span class="fas fa-angle-up text-success"></span>                                   
+                                    <span class="text-success font-weight-bold">18.2%</span>
+                                </div>
+                            </div>
+                            <div class="d-block ml-auto">
+                                <div class="d-flex align-items-center text-right mb-2">
+                                    <span class="shape-xs rounded-circle bg-quaternary mr-2"></span>
+                                    <span class="font-weight-normal small">July</span>
+                                </div>
+                                <div class="d-flex align-items-center text-right">
+                                    <span class="shape-xs rounded-circle bg-secondary mr-2"></span>
+                                    <span class="font-weight-normal small">August</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="ct-chart-ranking ct-golden-section ct-series-a"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4 mb-4">
+                <div class="card border-light shadow-sm">
+                    <div class="card-header border-bottom border-light d-flex justify-content-between">
+                        <h2 class="h5 mb-0">Администраторы</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush list my--3">
+                            {% for admin in admins %}
+                            <li class="list-group-item px-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <img class="user-avatar md-avatar rounded-circle" alt="Image placeholder" src="{{admin.icon}}">
+                                    </div>
+                                    <div class="col-auto ml--2">
+                                        <h4 class="h6 mb-0">
+                                            {{admin.full_name}}
+                                        </h4>
+                                        {% if admin.is_main_admin %}
+                                            <span class="text-success">●</span>
+                                            <small>Главный администратор</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-12" style="margin-right: 0 !important; margin-left: 0 !important; flex: 1 0 auto;">
+            <div class="col-12 mb-4" style="padding: 0 !important;">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                    <h2 class="h5">Посещение категорий/подкатегорий</h2>
+                                    </div>
+                                    <div class="col text-right">
+                                        <a href="#" class="btn btn-sm btn-secondary" data-toggle="modal" href="#categStats" data-target="#categStats">Смотреть все</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Категория</th>
+                                        <th scope="col">Просмотры</th>
+                                        <th scope="col">Пролистывания</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for category in categories[:5] %}
+                                        <tr>
+                                            <th scope="row">
+                                                {{category.name}}
+                                            </th>
+                                            <td>
+                                                {{category.counter}}
+                                            </td>
+                                            <td>
+                                                {{category.pagination_counter}}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                        All categStats for modal
+                    -->
+                    {% with categories=categories %}
+                        {% include "dashboard_categstats.html" %}
+                    {% endwith %}
+                    <!--<div class="col-12 col-lg-6 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-header border-bottom border-light d-flex justify-content-between">
+                                <h2 class="h5 mb-0">Администраторы</h2>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush list my--3">
+                                    {% for admin in admins %}
+                                    <li class="list-group-item px-0">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <img class="user-avatar md-avatar rounded-circle" alt="Image placeholder" src="{{admin.icon}}">
+                                            </div>
+                                            <div class="col-auto ml--2">
+                                                <h4 class="h6 mb-0">
+                                                    {{admin.full_name}}
+                                                </h4>
+                                                {% if admin.is_main_admin %}
+                                                    <span class="text-success">●</span>
+                                                    <small>Главный администратор</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <!-- <div class="col-12 col-xl-4 mb-4">
+                <div class="col-12 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body d-flex flex-row align-items-center flex-0 border-bottom">
+                            <div class="d-block">
+                                <div class="h6 font-weight-normal text-gray mb-2">Всего заказов</div>
+                                <h2 class="h3">452</h2>
+                                <div class="small mt-2">                               
+                                    <span class="fas fa-angle-up text-success"></span>                                   
+                                    <span class="text-success font-weight-bold">18.2%</span>
+                                </div>
+                            </div>
+                            <div class="d-block ml-auto">
+                                <div class="d-flex align-items-center text-right mb-2">
+                                    <span class="shape-xs rounded-circle bg-quaternary mr-2"></span>
+                                    <span class="font-weight-normal small">July</span>
+                                </div>
+                                <div class="d-flex align-items-center text-right">
+                                    <span class="shape-xs rounded-circle bg-secondary mr-2"></span>
+                                    <span class="font-weight-normal small">August</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="ct-chart-ranking ct-golden-section ct-series-a"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-xl-6">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                <div class="ct-chart-traffic-share ct-golden-section ct-series-a" id="good_search"></div>
+                            </div>
+                            <div class="col-12 col-xl-7 px-xl-0">
+                                <h2 class="h5 mb-3">Топ удачного поиска</h2>
+                                {% for query in good_search %}
+                                    <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"></span> {{query[0]}} <b>{{query[1]}}</b></h6>
+                                {% endfor %}
+                                <!--<h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"><span class="fas fa-desktop"></span></span> Телеграм <a href="#" class="h6">60%</a></h6>
+                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-primary mr-1"><span class="fas fa-mobile-alt"></span></span> Инстаграм <a href="#" class="h6">30%</a></h6>
+                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-tertiary mr-1"><span class="fas fa-tablet-alt"></span></span> Facebook <a href="#" class="h6">10%</a></h6>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <div class="row d-block d-xl-flex align-items-center">
+                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                <div class="ct-chart-traffic-share ct-golden-section ct-series-a " id="bad_search"></div>
+                            </div>
+                            <div class="col-12 col-xl-7 px-xl-0">
+                                <h2 class="h5 mb-3">Топ неудачного поиска</h2>
+                                {% for query in bad_search %}
+                                    <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"></span> {{query[0]}} <b>{{query[1]}}</b></h6>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

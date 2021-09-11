@@ -1,0 +1,28 @@
+<div class="modal fade" id="infoModal-{{package.id}}" tabindex="-1" role="dialog" aria-labelledby="infoModal-{{package.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">{{package.title}}</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Цена пакета: {{package.cost}} сум</li>
+                    <li> Товары</li>
+                    <ol>
+                    {% for product in package.products %}
+                    <li>
+                        <img src="{{product.product.links[0]}}" height="100" width="100">
+                        {{ product.product.name }}
+                        {{ product.product.cost }}
+                    </li>
+                    {% endfor %}
+                    </ol>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray ms-auto" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

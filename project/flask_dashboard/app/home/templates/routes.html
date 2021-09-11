@@ -1,0 +1,152 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Маршруты {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+                
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+                <div class="d-block mb-4 mb-md-0">
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                          <li class="breadcrumb-item"><a href="/dashboard"><span class="fas fa-home"></span></a></li>
+                          
+                          <li class="breadcrumb-item active" aria-current="page">Маршруты</li>
+                        </ol>
+                    </nav>
+                    <h2 class="h4">Все маршруты</h2>
+                    <p class="mb-0">Маршруты водителей</p>
+                </div>
+            </div>
+            <div class="table-settings mb-4">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col col-md-6 col-lg-3 col-xl-4">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon2"><span class="fas fa-search"></span></span>
+                            <input type="text" class="form-control" id="exampleInputIconLeft" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 col-xl-1 pl-md-0 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon icon-sm icon-gray">
+                                    <span class="fas fa-cog"></span>
+                                </span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+                                <span class="dropdown-item font-weight-bold text-dark">Show</span>
+                                <a class="dropdown-item font-weight-bold" href="/routes/5">5
+                                {% if index == 5 %} <span class="icon icon-small ml-auto"><span class="fas fa-check"></span></span> {% endif %}
+                                </a>
+                                <a class="dropdown-item font-weight-bold" href="/routes/10">10 
+                                {% if index == 10 %} <span class="icon icon-small ml-auto"><span class="fas fa-check"></span></span> {% endif %}
+                                </a>
+                                <a class="dropdown-item font-weight-bold" href="/routes/20">20
+                                {% if index == 20 %} <span class="icon icon-small ml-auto"><span class="fas fa-check"></span></span> {% endif %}
+                                </a>
+                                <a class="dropdown-item font-weight-bold" href="/routes/30">30
+                                {% if index == 30 %} <span class="icon icon-small ml-auto"><span class="fas fa-check"></span></span> {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>				
+                            <th>Номер заказа</th>
+                            <th>Водитель</th>
+                            <th>Маршрут</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Item -->
+                        {% for route in elements %}
+                        <tr>
+                            <td>
+                                <a href="/static/assets/invoice.html" class="font-weight-bold">
+                                    {{ route.id }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold">
+                                {{route.order}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold">
+                                {{route.driver.phone}}
+                                </span>
+                            </td>
+                            <td>
+                                <a data-toggle="modal" href="#route-{{route.id}}" data-target="#route-{{route.id}}">
+                                <span class="fas fa-route"></span>
+                                <span class="font-weight-normal text-success">Посмотреть маршрут</span></a>
+                            </td>
+                            {% if route.status == 1 %}                      
+                                <td><span class="font-weight-normal text-success">Выполняется</span></td>
+                            {% else %}
+                                <td><span class="font-weight-normal text-danger">Закрыт</span></td>
+                            {% endif %}
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="icon icon-sm">
+                                            <span class="fas fa-ellipsis-h icon-dark"></span>
+                                        </span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" data-toggle="modal" href="#modalChange-{{route.id}}" data-target="#modalChange-{{route.id}}">
+                                        <span class="fas fa-edit mr-2"></span>Редактировать</a>
+                                        <a class="dropdown-item text-danger" data-toggle="modal" href="#modalDelete-{{route.id}}" data-target="#modalDelete-{{route.id}}">
+                                        <span class="fas fa-trash-alt mr-2"></span>Удалить</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% with route=route,form=form %}
+                            {% include "route_delete.html" %}
+                            {% include "route_redaction.html" %}
+                            {% include "route_map.html" %}
+                        {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="card-footer px-3 border-0 d-flex align-items-center justify-content-between">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination mb-0">
+                            {% if pagination.get_page() > 1 %}
+                                <li class="page-item">                                                              
+                                <a class="page-link" href="./?page={{ pagination.get_page() - 1 }}">Предыдущая</a>              
+                                </li>
+                            {% endif %}                                                                     
+                            {% if pagination.get_pages() > pagination.get_page() %}
+                                <li class="page-item">                                           
+                                <a class="page-link" href="./?page={{ pagination.get_page() + 1 }}">Следующая</a>
+                                </li>                
+                            {% endif %} 
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

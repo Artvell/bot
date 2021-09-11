@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Маршрут</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{yandex_key}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/route.js') }}" type="text/javascript"></script>
+	<style>
+        html, body, #map {
+            width: 100vw; height: 100vh; padding: 0; margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+<script>
+    ymaps.ready(function () {
+        console.log("###")
+        init("{{from_location[0]}}","{{from_location[1]}}", "{{to_location[0]}}","{{to_location[1]}}");
+    });
+</script>

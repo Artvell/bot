@@ -1,0 +1,5 @@
+project/models/config.py
+project/admin_bot/config.py
+project/bot/config.py
+project/delivery_bot/config.py
+project/flask_dashboard/config.py

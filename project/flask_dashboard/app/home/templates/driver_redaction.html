@@ -1,0 +1,33 @@
+<div class="modal fade" id="modalChange-{{driver.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{driver.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить данные водителя</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/driver/change/" target="dummyframe" method="post" id="changeForm-{{driver.id}}">
+                        {{ form.hidden_tag() }}
+                        {% if driver.id > 0 %}
+                            <p>
+                                {{form.driver_id.label}}
+                                {{ form.driver_id(value=driver.id,readonly=True) }}
+                            </p>
+                        {% endif %}
+                        <p>
+                            {{ form.phone.label }}<br>
+                            {{ form.phone(class="form-control",value=driver.phone) }}
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/driver/change/','changeForm-{{driver.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

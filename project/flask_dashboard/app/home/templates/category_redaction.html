@@ -1,0 +1,34 @@
+<div class="modal fade" id="modalChange-{{category.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{category.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить категорию</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/category/change/" target="dummyframe" method="post" id="changeForm-{{category.id}}">
+                        {{ form.hidden_tag() }}
+                        {% if category.id > 0 %}
+                            <p>
+                                {{form.category_id.label}}
+                                {{ form.category_id(value=category.id,readonly=True) }}
+                            </p>
+                        {% endif %}
+                        <p>
+                            {{ form.category.label }}<br>
+                            {{ form.category(class="form-control",value=category.category) }}
+                            
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/category/change/','changeForm-{{category.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="modal fade" id="categStats" tabindex="-1" role="dialog" aria-labelledby="categStats" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Посещаемость категорий</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Категория</th>
+                        <th scope="col">Просмотры</th>
+                        <th scope="col">Пролистывания</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <th scope="row">
+                                {{category.name}}
+                            </th>
+                            <td>
+                                {{category.counter}}
+                            </td>
+                            <td>
+                                {{category.pagination_counter}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

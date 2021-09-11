@@ -1,0 +1,39 @@
+<div class="modal fade" id="modalChange-{{subcategory.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{subcategory.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить подкатегорию</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/subcategory/change/" target="dummyframe" method="post" id="changeForm-{{subcategory.id}}">
+                        {{ form.hidden_tag() }}
+                        {% if subcategory.id > 0 %}
+                            <p>
+                                {% set f = form.category.process_data(subcategory.category) %}
+                                {{ form.subcategory_id.label }}
+                                {{ form.subcategory_id(value=subcategory.id,readonly=True) }}
+                            </p>
+                        {% endif %}
+                        <p>
+                            {{ form.subcategory.label }}<br>
+                            {{ form.subcategory(class="form-control",value=subcategory.subcategory) }}
+                            
+                        </p>
+                        <p>
+                            {{ form.category.label }}<br>
+                            {{ form.category(class="form-control") }}
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/subcategory/change/','changeForm-{{subcategory.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

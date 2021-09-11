@@ -1,0 +1,37 @@
+<div class="modal fade" id="modalChange-{{package.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{package.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить пакет</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/package/change/" target="dummyframe" method="post" id="changeForm-{{package.id}}">
+                        {{ form.hidden_tag() }}
+                        {% if package.id > 0 %}
+                            <p>
+                                {{form.package_id.label}}
+                                {{ form.package_id(value=package.id,readonly=True) }}
+                            </p>
+                        {% endif %}
+                        <p>
+                            {{ form.title.label }}<br>
+                            {{ form.title(class="form-control",value=package.title) }}
+                        </p>
+                        <p>
+                            {{ form.cost.label }}<br>
+                            {{ form.cost(class="form-control",value=package.cost) }}
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/package/change/','changeForm-{{package.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

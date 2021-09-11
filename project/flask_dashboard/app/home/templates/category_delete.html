@@ -1,0 +1,17 @@
+<div class="modal fade" id="modalDelete-{{category.id}}" tabindex="-1" role="dialog" aria-labelledby="modalDelete-{{category.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Удалить категорию</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить эту категорию?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendPost('/category/delete',{{category.id}},'category_id')">Удалить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

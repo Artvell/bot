@@ -1,0 +1,72 @@
+<div class="modal fade" id="infoModal-{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="infoModal-{{order.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Заказ №{{order.id}} от {{order.order_created}}</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% if order.status == 2 %}                      
+                        <li><span class="font-weight-normal text-success">Выполняется</span> ({{order.client_asked_time}})</li>
+                    {% elif order.status == 3 %}
+                        <li><span class="font-weight-normal text-danger">Закрыт</span> {{order.order_closed}}</li>
+                    {% elif order.status == 4 %}
+                        <li><span class="font-weight-normal text-warning">Ожидает оплаты</span></li>
+                    {% else %}
+                        <li><span class="font-weight-normal">Предзаказ</span></li>
+                    {% endif %}
+                    <li>
+                        <span class="font-weight-bold">Товары:</span>
+                        <ol>
+                        {% for item in order.order %}
+                            {% if item.is_package %}
+                                <li>Пакет №{{item.id}}</a> {{item.kol}} шт</li>
+                            {% else %}
+                                <li>Товар №{{item.id}}</a> {{item.kol}} шт</li>
+                            {% endif %}
+                        {% endfor %}
+                        </ol>
+                    </li>
+                    <li>
+                        <span class="font-weight-bold">Заказчик:</span>
+                        <ul>
+                            <li><span class="font-weight-normal">Имя: {{order.user.full_name}}</span></li>
+                            <li><span class="font-weight-normal">Никнейм: {{order.user.username}}</span></li>
+                            <li><span class="font-weight-normal">Телефон: {{order.user.phone}}</span></li>
+                        </ul>                        
+                    {% if order.order_type == 1 %}
+                        <li><span class="font-weight-bold"> Тип доставки: <br/><span class="font-weight-normal">Самовывоз</span></span></li>
+                    {% elif order.order_type == 2 %}
+                        <li><span class="font-weight-bold"> Тип доставки: <br/><span class="font-weight-normal" style="margin-left: 32px;">Доставка</span></span>
+                        {% if phone is not none %}
+                        <br/>
+                        <span style="margin-left: 32px;" class="font-weight-normal">Доставщик: {{phone}}</span>
+                        <a href="http://192.168.100.13:5000{{route}}" target="_blank">
+                        <p style="margin-left: 32px;">
+                        <span class="fas fa-route"></span>
+                        <span class="font-weight-normal text-success">Посмотреть маршрут</span></a></p>
+                        </li>
+                    {% endif %}
+                    {% else %}
+                        <li><span class="font-weight-bold"> Тип доставки: <br/><span class="font-weight-normal">Предзаказ</span></span></li>
+                    {% endif %}
+                    
+                    {% if order.payment_status == 0 %}
+                        <li><span class="font-weight-bold text-danger">Тип оплаты: <span class="font-weight-normal">Не оплачен</span></span></li>
+                    {% elif order.payment_status == 1 %}
+                        <li><span class="font-weight-bold">Тип оплаты: <span class="font-weight-normal">Наличные</span></span></li>
+                    {% elif order.payment_status == 2 %}
+                        <li><span class="font-weight-bold">Тип оплаты: <span class="font-weight-normal">Карта</span></span></li>
+                    {% else %}
+                        <li><span class="font-weight-bold">Тип оплаты: <span class="font-weight-normal">Через телеграм</span></span></li>
+                    {% endif %}
+                    <li style="margin-top: 20px !important; text-align: center !important"><span class="font-weight-bolder" style="font-size: 20px;">Общая сумма: {{order.order_summ}}</span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray ms-auto" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

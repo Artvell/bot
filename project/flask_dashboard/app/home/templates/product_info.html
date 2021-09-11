@@ -1,0 +1,48 @@
+<div class="modal fade" id="infoModal-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="infoModal-{{product.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">{{product.name}}</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <center>
+                    <img src = "{{product.links[0]}}">
+                </center>
+                <ul>
+                    {% if product.subcategory %}
+                        <li>Категория: {{product.category.category}}</li>
+                    {% endif %}
+                    {% if product.subcategory %}
+                        <li>Подкатегория: {{product.subcategory.subcategory}}</li>
+                    {% endif %}
+                    {% if product.telegraph is not none and product.telegraph != "" %}
+                        <li>Telegraph: <a href='{{product.telegraph}}' target="_blank">{{product.telegraph}} <span class="fas fa-external-link-alt"></span></a></li>
+                    {% endif %}
+                    <li>Лайков: {{product.likes}}</li>
+                    <li>Комментариев: {{product.comments}}</li>
+                    {% if product.is_available %}                      
+                        <li><span class="font-weight-normal text-success">Есть в наличии</span></li>
+                    {% else %}
+                        <li><span class="font-weight-normal text-danger">Нет в наличии</span></li>
+                    {% endif %}
+                    {% if product.is_visible %}                      
+                        <li><span class="font-weight-normal text-success">Отображается в боте</span></li>
+                    {% else %}
+                        <li><span class="font-weight-normal text-danger">Не отображается в боте</span></li>
+                    {% endif %}
+                     <li><span class="font-weight-bold">Цена: {{product.cost}}</span></li>
+                    <li><div class="mb-3">
+                        <label for="Textarea" class="form-label">Описание</label>
+                        <textarea class="form-control" id="Textarea" rows="8" readonly>
+                            {{product.text}}
+                        </textarea>
+                    </div></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray ms-auto" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

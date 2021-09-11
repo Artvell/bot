@@ -1,0 +1,74 @@
+<div class="modal fade" id="modalChange-{{package.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{package.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить пакет</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ui-front">
+                <div class="mb-3">
+                    Пакет №: <input type="text" id="package-{{package.id}}" value="{{package.id}}" readonly><br/>
+                    <label for="productSearch-{{package.id}}">Введите название товара</label>
+                    <input id="productSearch-{{package.id}}" class="ui-widget form-control" style="margin-bottom: 10px;">
+                    <form type="post" id="form-{{package.id}}">
+                      <ol id="list-{{package.id}}" style="padding-left: 0;">
+                        {% for product in package.products %}
+                          <li id="element-{{package.id}}-{{product.product.id}}">
+                            <img src="{{product.product.links[0]}}" height="100" width="100">
+                            {{ product.product.name }}
+                            {{ product.product.cost }}
+                            <span class="far fa-trash-alt" onclick="deleteFromPack({{product.product.id}}, {{package.id}})" style="cursor:pointer"></span>
+                          </li>
+                        {% endfor %}
+                      </ol>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    $( "#productSearch-{{package.id}}" ).autocomplete({
+      source: function( request, response ){
+            searchAjaxFunction(request,response,"/get_product/");
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        var splitted_id=this.id.split("-");
+        var my_id = splitted_id[splitted_id.length-1];
+        var product = new Map()
+        product
+          .set("id", ui.item.value)
+          .set("name", ui.item.label)
+          .set("icon", ui.item.icon)
+          .set("cost", ui.item.cost);
+        addToPack(product,my_id);
+        $(this).val("");
+        return false;
+      },
+      open: function() {
+        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+      },
+      close: function() {
+        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+      }
+    });
+    $( "#productSearch-{{package.id}}" ).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+      var li = $('<li>'),
+          img = $('<img>');
+      img.attr({
+        src: item.icon,
+        alt: item.label,
+        width: 64,
+        height: 64
+      });
+      li.attr('data-value', item.label+" Цена: ");
+      li.append('<a href="#">');
+      li.find('a').append(img).append(item.label);    
+
+      return li.appendTo(ul);
+  };
+    </script>
+</div>

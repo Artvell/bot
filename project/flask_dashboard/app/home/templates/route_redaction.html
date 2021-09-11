@@ -1,0 +1,33 @@
+<div class="modal fade" id="modalChange-{{route.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{route.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить маршрут</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/route/change/" target="dummyframe" method="post" id="changeForm-{{route.id}}">
+                        {% set f = form.status.process_data(route.status) %}
+                        {{ form.hidden_tag() }}
+                        <p>
+                            {{form.route_id.label}}
+                            {{ form.route_id(value=route.id,readonly=True) }}
+                        </p>
+                        <p>
+                            {{ form.status.label }}<br>
+                            {{ form.status(class="form-control") }}
+                            
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/route/change/','changeForm-{{route.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

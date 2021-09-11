@@ -1,0 +1,46 @@
+<div class="modal fade" id="modalChange-{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{order.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить заказ</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <form action="" method="post" id="changeForm-{{order.id}}">
+                    {{ form.hidden_tag() }}
+                    <p>
+                        {{form.order_id.label}}
+                        {{ form.order_id(value=order.id,readonly=True) }}
+                    </p>
+                    <p>
+                        {{ form.status.label }}<br>
+                        {{ form.status(class="form-select",id="status-"+order.id|string) }}
+                        
+                    </p>
+                    <p>
+                        {{ form.order_type.label }}<br>
+                        {{ form.order_type(class="form-select",id="type-"+order.id|string) }}
+                    </p>
+                    <p>
+                        {{ form.payment_status.label }}<br>
+                        {{ form.payment_status(class="form-select",id="payment-"+order.id|string) }}
+                    </p>
+                </form>
+                <script>changeStatus(
+                    'status-{{order.id}}',
+                    'type-{{order.id}}',
+                    'payment-{{order.id}}',
+                    {{order.status}},
+                    {{order.order_type}},
+                    {{order.payment_status}}
+                    )</script>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/order/change/','changeForm-{{order.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

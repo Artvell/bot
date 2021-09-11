@@ -1,0 +1,89 @@
+<div class="modal fade" id="modalChange-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="modalChange-{{product.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Изменить товар</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="my form">
+                    <form action="/product/change/" target="dummyframe" method="post" id="changeForm-{{product.id}}">
+                    {% set f = form.text.process_data(product.text) %}
+                        {{ form.hidden_tag() }}
+                        <p>
+                            {{form.product_id.label}}
+                            {{ form.product_id(value=product.id,readonly=True) }}
+                        </p>
+                        <p>
+                            {{ form.name.label }}<br>
+                            {{ form.name(class="form-control",value=product.name) }}
+                            
+                        </p>
+                        <p>
+                            {{ form.telegraph.label }}<br>
+                            {{ form.telegraph(class="form-control",value=product.telegraph) }}
+                        </p>
+                        <p>
+                            {{ form.cost.label }}<br>
+                            {{ form.cost(class="form-control",value=product.cost) }}
+                        </p>
+                        <p>
+                            {{ form.is_available.label }}
+                            {% if product.is_available %}
+                                {{ form.is_available(class="form-check-input",checked=True) }}
+                            {% else %}
+                                {{ form.is_available(class="form-check-input") }}
+                            {% endif %}
+                        </p>
+                        <p>
+                            {{ form.is_visible.label }}
+                            {% if product.is_visible %}
+                                {{ form.is_visible(class="form-check-input",checked=True) }}
+                            {% else %}
+                                {{ form.is_visible(class="form-check-input") }}
+                            {% endif %}
+                        </p>
+                        {% set selector_id="categ-"+product.id|string %}
+                        {% set selector_subcateg_id="subcateg-"+product.id|string %}
+                        {% set s=form.choices_for_subcategory(product.category) %}
+                        {% set function="ajaxFunction("+"'"+selector_id+"'"+","+"'"+selector_subcateg_id+"'"+")" %}
+                        <p>
+                            {{ form.category.label }}<br>
+                            {{ form.category(class="form-select",id=selector_id,onchange=function) }}
+                        </p>
+                        <p>
+                            {{ form.subcategory.label }}<br>
+                            {{ form.subcategory(class="form-select",id=selector_subcateg_id) }}
+                        </p>
+                        <p>
+                            <label for="links">Ссылки на фотогорафии:</label><br>
+                            <ul id="links_{{product.id}}">
+                            {% for link in product.links %}
+                                <li id="link_{{product.id}}_{{loop.index-1}}">
+                                    <input type="text" name="links[]" class="form-control"
+                                    placeholder="https://example.com"
+                                    value="{{link}}"
+                                    required>
+                                    <span class="far fa-times-circle" style="cursor:pointer" onclick="deleteElement('link_{{product.id}}_{{loop.index-1}}')"></span>
+                                </li>
+                                {% set ind=loop.index %}
+                            {% endfor %}
+                            </ul>
+                            <span id="addLink" class="fas fa-plus" style="cursor:pointer" onclick="addElement('links_{{product.id}}',{{ind}})"></span>
+                        </p>
+                        <p>
+                            {{ form.text.label }}<br>
+                            {{ form.text(class="form-control",rows=8) }}
+                        </p>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="sendForm('/product/change/','changeForm-{{product.id}}')">Сохранить</button>
+                <button type="button" class="btn btn-danger text-gray ms-auto" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

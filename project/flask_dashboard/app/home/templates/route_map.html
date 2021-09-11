@@ -1,0 +1,16 @@
+<div class="modal fade" id="route-{{route.id}}" tabindex="-1" role="dialog" aria-labelledby="route-{{route.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Маршрут №{{route.id}}</h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe src="http://192.168.100.13:5000/map/{{route.uuid}}/" width="500" height="500"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray ms-auto" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
